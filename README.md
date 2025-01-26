@@ -36,8 +36,8 @@ Test the connexion:
 As you need a second user for rsync (www-data is a no-login user), do the same ssh key manipulations for it.
 
 You must also configure sudoers on the remote: 
-- add in /etc/sudoers 	www-data ALL=(ALL) NOPASSWD: /usr/bin/rsync
-	myuser ALL=(www-data) NOPASSWD: ALL
+- add in /etc/sudoers
+  www-data ALL=(ALL) NOPASSWD: /usr/bin/rsync myuser ALL=(www-data) NOPASSWD: ALL
 Doing this should avoid prompt of password, but still secured as you are using ssh key.
 
 you can have a check at this time by testing on the command line with someting like:
