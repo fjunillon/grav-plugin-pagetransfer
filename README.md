@@ -28,8 +28,10 @@ In all samples after:
 
 On dev side, generate ssh key:
 - sudo -u www-data ssh-keygen -t rsa -b 4096 -f /var/www/.ssh/id_rsa
+
 Copy the public part to the remote using: 
 - sudo -u www-data ssh-copy-id -i /var/www/.ssh/id_rsa.pub myuser@host_name_or_ip-forRemote
+
 Test the connexion:
 - sudo -u www-data ssh -o Strict
 
