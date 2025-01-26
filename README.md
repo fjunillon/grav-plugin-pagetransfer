@@ -29,39 +29,51 @@ In all samples after:
 - « myuser » refers to any user you want but it must have a ssh access to remote.
 
 On dev side, generate ssh key:
-- _sudo -u www-data ssh-keygen -t rsa -b 4096 -f /var/www/.ssh/id_rsa_
+- sudo -u www-data ssh-keygen -t rsa -b 4096 -f /var/www/.ssh/id_rsa
 
 Copy the public part to the remote using: 
-- _sudo -u www-data ssh-copy-id -i /var/www/.ssh/id_rsa.pub myuser@host_name_or_ip-forRemote_
+- sudo -u www-data ssh-copy-id -i /var/www/.ssh/id_rsa.pub myuser@host_name_or_ip-forRemote
 
 Test the connexion:
-- _sudo -u www-data ssh -o Strict_
+- sudo -u www-data ssh -o Strict
 
 As you need a second user for rsync (www-data is a no-login user), do the same ssh key manipulations for it.
 
 You must also configure sudoers on the remote: 
 - add in /etc/sudoers
-  _www-data ALL=(ALL) NOPASSWD: /usr/bin/rsync myuser ALL=(www-data) NOPASSWD: ALL_
+  www-data ALL=(ALL) NOPASSWD: /usr/bin/rsync myuser ALL=(www-data) NOPASSWD: ALL
 
 Doing this should avoid prompt of password, but still secured as you are using ssh key.
 
 you can have a check at this time by testing on the command line with someting like:
-_rsync -avz --relative -e "ssh -o StrictHostKeyChecking=no" --rsync-path='sudo -S -u www-data /usr/bin/rsync' /var/www/grav/user/pages/someFileOrDir myuser@host_name_or_ip-forRemote:/var/www/grav/user/pages_
+
+rsync -avz --relative -e "ssh -o StrictHostKeyChecking=no" --rsync-path='sudo -S -u www-data /usr/bin/rsync' /var/www/grav/user/pages/someFileOrDir myuser@host_name_or_ip-forRemote:/var/www/grav/user/pages
 
 if you want to use « sftp », then you have to modify sshd_config on the remote and add this section:
 
-_Subsystem       sftp    /usr/lib/openssh/sftp-server
+------------------------
+
+Subsystem       sftp    /usr/lib/openssh/sftp-server
+
 Match User www-data
-    ForceCommand internal-sftp
-    ChrootDirectory /var/www
-    AllowTcpForwarding no
-    X11Forwarding no
-    AuthorizedKeysFile /var/www/.ssh/authorized_keys_
+
+ForceCommand internal-sftp
+
+ChrootDirectory /var/www
+
+AllowTcpForwarding no
+
+X11Forwarding no
+
+AuthorizedKeysFile /var/www/.ssh/authorized_keys
+
+------------------------
 
 Have a check by running on the command line:
-- _sftp www-data@host_name_or_ip-forRemote_
+- sftp www-data@host_name_or_ip-forRemote
+
 If it works, you will have a prompt like: 
-Connected to host_name_or_ip-forRemote.
+- Connected to host_name_or_ip-forRemote.
 sftp> 
 
 ## Usage
