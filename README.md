@@ -84,6 +84,7 @@ Go to the pagetransfer plugin in Grav admin and configure needed options.
 - (N) remote address or name
 - (N) remote path destination : if you use rsync, it’s a full path (/var/www/grav/user/pages). if you use sftp, it’s a relative path from ChrootDirectory declared in sshd_config (from the config sample, it will be /grav/user/pages)
 - (O) rsync/sftp-> You can select or not if you want to transfer subdirectories found.
+- (O) rsync/sftp-> You can select or not if you want to clear distant server cache (using grav clearcache command line) after transfer completion
 - (O) rsync/sftp -> You can select to use or not the search and replace mecanism. This works only on text files and you can configure as much key/word you want. For « rsync », the « sed » command line will be use, for « sftp », php code will be use.
 
 Now you can go to the « Pages transfer » option in the left Grav menu.
